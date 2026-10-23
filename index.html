@@ -291,6 +291,8 @@ function renderRoutes(){
     const c=sum(r.stops.map(s=>count(zs(s))));
     const pts=[start,...r.stops.map(s=>LOCS[s].addr),start];
     const url="https://yandex.ru/maps/?rtt=auto&rtext="+pts.map(encodeURIComponent).join("~");
+    const addrs=r.stops.map(s=>LOCS[s].addr);
+    const gurl="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(start)+"&destination="+encodeURIComponent(addrs[addrs.length-1])+(addrs.length>1?"&waypoints="+addrs.slice(0,-1).map(encodeURIComponent).join("%7C"):"");
     const key=s=>`done2-${di}-${cr}-${s}`;
     const doneN=r.stops.filter(s=>get(key(s),"0")==="1").length;
     const loadOrder=[...r.stops].reverse().map(s=>LOCS[s].name.split(",")[0].replace(/\.$/,"")).join(" → ");
@@ -299,7 +301,9 @@ function renderRoutes(){
         <span class="ctag">${CREW[cr]}</span>
         <div class="rtitle"><h2>${r.title}</h2><span class="rdate">${doneN}/${r.stops.length} готово</span></div>
         ${chips(c)}
-        <a class="btn" href="${url}" target="_blank" rel="noopener">Маршрут в Яндекс.Картах ↗</a>
+        <a class="btn" href="${gurl}" target="_blank" rel="noopener">Весь маршрут в Google Картах ↗</a>
+        <a class="btn ghost" href="${url}" target="_blank" rel="noopener">Весь маршрут в Яндекс.Картах — с компьютера ↗</a>
+        <p class="muted">С телефона в Яндексе едьте по точкам: кнопка «В Яндекс.Карты» в карточке каждого адреса.</p>
         <div class="load"><b>Грузить:</b> сначала то, что выгружаем последним — ${esc(loadOrder)}.${r.tip?"<br>"+esc(r.tip):""}</div>
       </div>
       <ol class="stops">${r.stops.map((s,i)=>{const L=LOCS[s],z=zs(s),cc=count(z),d=get(key(s),"0")==="1";
@@ -308,7 +312,7 @@ function renderRoutes(){
           <summary><span class="seq">${i+1}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
           <div class="sbody">${chips(cc)}${zonesHtml(showNote?L:{},z)}
             <div class="addr">${esc(L.addr)}</div>
-            <div class="actions"><a class="btn ghost" href="${mapUrl(L.addr)}" target="_blank" rel="noopener">Навигатор ↗</a>
+            <div class="actions"><a class="btn ghost" href="${mapUrl(L.addr)}" target="_blank" rel="noopener">В Яндекс.Карты ↗</a>
             <label class="check"><input type="checkbox" id="chk-${key(s)}" data-done="${key(s)}" ${d?"checked":""}> Смонтировано</label></div>
           </div></details></li>`}).join("")}</ol>
     </article>`;
