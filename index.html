@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Разъезд «Театр. Балет»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky header + segmented tabs, single column of stop cards, mobile first */
+:root{
+  color-scheme:light;
+  --bg:#F7F8F6; --surface:#FFFFFF; --ink:#1A2520; --muted:#66756D; --line:#E3E8E4;
+  --pine:#2C7A5B; --pine-soft:#E8F3EC; --gold:#A0802F; --gold-soft:#FAF3E1;
+  --frost:#3F6D8E; --frost-soft:#EAF1F7; --warn:#A5531F; --warn-soft:#FBEDE3;
+  --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.45 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);box-shadow:0 6px 12px -10px rgba(26,37,32,.18);padding-block:14px 10px;border-bottom:1px solid var(--line)}
+.eyebrow{font:500 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 20px/1.15 var(--f-display);margin:6px 0 10px;text-wrap:balance}
+.stats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.stat{font:500 12px/1 var(--f-body);padding:6px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.stat b{font:500 12px/1 var(--f-mono);margin-right:3px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{all:unset;cursor:pointer;text-align:center;font:600 13px/1 var(--f-body);padding:10px 4px;border-radius:9px;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--pine);color:#FFFFFF}
+.tabs button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,.btn:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+main{padding-top:16px;display:grid;gap:18px}
+.start{display:grid;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.start label{font:600 12px/1 var(--f-body);color:var(--muted)}
+input[type=text],input[type=search]{width:100%;font:500 15px var(--f-body);padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.route{display:grid;gap:10px}
+.rhead{display:grid;gap:8px}
+.rtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rnum{font:700 13px/1 var(--f-display);color:var(--pine)}
+.rtitle h2{font:700 17px/1.2 var(--f-display);margin:0}
+.rdate{font:500 13px var(--f-mono);color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:600 12px/1 var(--f-body);padding:6px 8px;border-radius:7px}
+.chip b{font-family:var(--f-mono);font-weight:500}
+.c-pz{background:var(--gold-soft);color:var(--gold)}
+.c-tr{background:var(--pine-soft);color:var(--pine)}
+.c-cp{background:var(--frost-soft);color:var(--frost)}
+.c-bx{background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font:600 14px/1 var(--f-body);padding:13px 14px;border-radius:11px;background:var(--pine);color:#FFFFFF;text-align:center}
+.btn.ghost{background:transparent;color:var(--pine);border:1px solid var(--line);padding:10px 12px;font-size:13px}
+.load{font-size:13px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+.load b{color:var(--ink);font-weight:600}
+.stops{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.stop{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(26,37,32,.04)}
+.stop.done{opacity:.6}
+.stop summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:start;padding:12px}
+.stop summary::-webkit-details-marker{display:none}
+.seq{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:500 13px var(--f-mono);background:var(--pine-soft);color:var(--pine)}
+.stop.done .seq{background:var(--pine);color:#FFFFFF}
+.sname{font:600 15px/1.25 var(--f-body);min-width:0}
+.ssub{font-size:12.5px;color:var(--muted);margin-top:3px}
+.caret{color:var(--muted);font-size:18px;line-height:30px;transition:transform .15s}
+details[open] .caret{transform:rotate(90deg)}
+.sbody{padding:0 12px 12px 56px;display:grid;gap:10px}
+.zone{border-left:3px solid var(--line);padding:2px 0 2px 10px;display:grid;gap:3px}
+.zone.z-pz{border-color:var(--gold)} .zone.z-tr{border-color:var(--pine)} .zone.z-cp{border-color:var(--frost)} .zone.z-ot{border-color:var(--muted)}
+.zt{font:600 14px/1.3 var(--f-body)}
+.zw{font-size:12.5px;color:var(--muted)}
+.zone ul{margin:2px 0 0;padding-left:16px;font-size:13px;display:grid;gap:1px}
+.ref{font:500 11px var(--f-mono);color:var(--muted)}
+.note{font-size:12.5px;background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:7px 9px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.check{display:flex;align-items:center;gap:8px;font:600 13px var(--f-body);padding:9px 12px;border:1px solid var(--line);border-radius:11px;cursor:pointer;user-select:none}
+.check input{width:18px;height:18px;accent-color:var(--pine)}
+.addr{font-size:12.5px;color:var(--muted);user-select:text}
+.sec{display:grid;gap:8px}
+.sec h2{font:700 15px/1.2 var(--f-display);margin:4px 0 2px}
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 12px;border-top:1px solid var(--line);align-items:baseline}
+.row:first-child{border-top:0}
+.row .v{font:500 14px var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .k small{display:block;color:var(--muted);font-size:12px}
+.row.total{background:var(--pine-soft)} .row.total .k,.row.total .v{color:var(--pine);font-weight:600}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.step{display:grid;grid-template-columns:86px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.step:first-child{border-top:0}
+.when{font:500 12px/1.3 var(--f-mono);color:var(--pine)}
+.step h3{font:600 14.5px/1.3 var(--f-body);margin:0 0 3px}
+.step p{margin:0;font-size:13.5px;color:var(--muted)}
+.q{counter-reset:q;list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.q li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px}
+.rbadge{font:500 11px var(--f-mono);color:var(--pine);background:var(--pine-soft);border-radius:6px;padding:3px 6px;white-space:nowrap}
+.muted{color:var(--muted);font-size:13px;margin:0}
+@media (prefers-reduced-motion:reduce){.caret{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ЧУ «Сервисная компания БР» · 21.11.2026 – 24.01.2027</div>
+    <h1>Разъезд: «Классика. Театр. Балет»</h1>
+    <div class="stats" id="stats"></div>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="routes">Маршруты</button>
+      <button role="tab" aria-selected="false" data-tab="list">Адреса</button>
+      <button role="tab" aria-selected="false" data-tab="totals">Итого</button>
+      <button role="tab" aria-selected="false" data-tab="plan">План</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="routes" class="sec"></section>
+    <section id="list" class="sec" hidden></section>
+    <section id="totals" class="sec" hidden></section>
+    <section id="plan" class="sec" hidden></section>
+  </main>
+</div>
+
+<script>
+const LOCS = {
+  selivers:{name:"Селиверстов пер., 6",addr:"Москва, Селиверстов переулок, 6",zones:[{t:"tree",h:"2–2,1 м",w:"входная группа"}]},
+  neg:{name:"Неглинная, 12 (корп. А, Б, В)",addr:"Москва, улица Неглинная, 12",zones:[
+    {t:"pzr",w:"корп. А, входная группа"},
+    {t:"garl",w:"корп. А, лестница в холле"},
+    {t:"pzr",w:"корп. Б, входная группа"},
+    {t:"tree",h:"2,4 м (низ не шире 1 м)",w:"корп. В, 1 этаж, кафе «В»"},
+    {t:"tree",h:"2,3–2,5 м",w:"корп. В, каминный зал"},
+    {t:"comp",n:16,w:"корп. В, кафе"},
+    {t:"big",w:"корп. В, фойе 2 этажа"},
+    {t:"street",w:"корп. В, уличная входная группа"}],
+    note:"Ель 6 м в фойе собирает заказчик. Договориться, чтобы она стояла собранной до нашего приезда."},
+  nastas:{name:"Настасьинский пер., 5",addr:"Москва, Настасьинский переулок, 5",zones:[{t:"tree",h:"2–2,1 м",w:"входная группа"}]},
+  kotel:{name:"Котельническая наб., 33",addr:"Москва, Котельническая набережная, 33",zones:[{t:"pzc",w:"входная группа"}],
+    note:"В п. 1.2 «д. 33», в п. 2.2 «д. 33, корп. 1». Уточнить корпус."},
+  balchug:{name:"Балчуг, 2",addr:"Москва, улица Балчуг, 2",zones:[
+    {t:"pzr",w:"входная группа"},
+    {t:"tree",h:"2,7 м",w:"музей"},
+    {t:"tree",h:"0,5–0,6 м",w:"3 этаж, кафе"},
+    {t:"comp",n:8,w:"3 этаж, кафе"},
+    {t:"tree",h:"0,5–0,6 м",w:"9 этаж, кафе"},
+    {t:"comp",n:5,w:"9 этаж, кафе"}]},
+  zhitnaya:{name:"Житная, 12",addr:"Москва, улица Житная, 12",zones:[
+    {t:"pzr",w:"входная группа"},
+    {t:"tree",h:"0,5–0,6 м",w:"2 этаж, кафе"},
+    {t:"comp",n:12,w:"2 этаж, кафе"},
+    {t:"comp",n:1,w:"9 этаж, кафе"}]},
+  mytnaya:{name:"Мытная, 18",addr:"Москва, улица Мытная, 18",zones:[{t:"tree",h:"2–2,1 м",w:"входная группа"}]},
+  leninsky:{name:"Ленинский пр., 1, корп. 2",addr:"Москва, Ленинский проспект, 1к2",zones:[
+    {t:"pzc",w:"входная группа"},{t:"comp",n:8,w:"кафе"}]},
+  mira:{name:"Проспект Мира, 84",addr:"Москва, проспект Мира, 84",zones:[
+    {t:"tree",h:"2–2,1 м",w:"напротив конференц-зала"},{t:"comp",n:2,w:"кафе"}]},
+  pravdy:{name:"Правды, 6",addr:"Москва, улица Правды, 6",zones:[
+    {t:"pzc",w:"входная группа"},
+    {t:"tree",h:"2–2,1 м",w:"вторая входная группа"},
+    {t:"tree",h:"2,2–2,4 м",w:"2 этаж, кафе"},
+    {t:"comp",n:8,w:"2 этаж, кафе 1"},
+    {t:"comp",n:2,w:"2 этаж, кафе 2"}]},
+  volok:{name:"Волоколамское ш., 75",addr:"Москва, Волоколамское шоссе, 75",zones:[
+    {t:"pzc",w:"входная группа"},
+    {t:"tree",h:"2,2–2,4 м",w:"8 этаж, кафе"},
+    {t:"comp",n:9,w:"8 этаж, кафе"}]},
+  svobody:{name:"Свободы, 57",addr:"Москва, улица Свободы, 57",zones:[{t:"pzc",w:"входная группа"}]},
+  mosfilm:{name:"Мосфильмовская, 8, корп. 2",addr:"Москва, Мосфильмовская улица, 8к2",zones:[
+    {t:"pzr",w:"входная группа"},
+    {t:"tree",h:"0,5–0,6 м",w:"нулевой этаж, кафе"},
+    {t:"comp",n:3,w:"нулевой этаж, кафе"}]},
+  bagrat:{name:"Багратионовский пр., 7, корп. 20Б",addr:"Москва, Багратионовский проезд, 7к20Б",zones:[{t:"pzr",w:"входная группа"}]},
+  odin:{name:"Одинцово, Молодёжная, 21",addr:"Одинцово, Молодёжная улица, 21",zones:[{t:"tree",h:"3 м",w:"атриум"}]},
+  zven:{name:"Б/о «Звенигородка» ЦБ РФ",addr:"Московская область, Одинцовский городской округ, база отдыха Звенигородка, 1с13",zones:[
+    {t:"pzc",w:"входная группа"},{t:"comp",n:20,w:"кафе"}]}
+};
+
+const ROUTES = [
+  {n:1,date:"Сб 21.11",title:"Центр",stops:["selivers","neg","nastas"],
+   tip:"Самый тяжёлый адрес — Неглинная: две фотозоны, лестница, 4 ели, ель 6 м заказчика. На неё закладывать большую часть дня."},
+  {n:2,date:"Вс 22.11",title:"Замоскворечье",stops:["kotel","balchug","zhitnaya","mytnaya","leninsky"],
+   tip:"Житная, Мытная и Ленинский рядом друг с другом у Октябрьской, переезды короткие."},
+  {n:3,date:"Сб 28.11",title:"Север и северо-запад",stops:["mira","pravdy","volok","svobody"],
+   tip:"Обратно со Свободы удобнее по МКАД."},
+  {n:4,date:"Вс 29.11",title:"Запад и область",stops:["mosfilm","bagrat","odin","zven"],
+   tip:"Звенигородка последней: самый дальний адрес и 20 композиций. Выезжать рано."}
+];
+
+const KIND = {pzr:"pz",pzc:"pz",tree:"tr",comp:"cp",garl:"ot",big:"ot",street:"tr"};
+
+function zoneInfo(z){
+  switch(z.t){
+    case "pzr":return {title:"Фотозона прямоугольная",ref:"п. 2.1",items:[
+      "Баннер «стена гостиной с лепниной» 2,5–3 × 2,2–2,5 м, хвоя по краю, шары, сосульки, гирлянда",
+      "Люстра из стекляруса на баннер","Ели 2–2,2 м и 1,6–1,8 м (по 1 шт.)",
+      "Рама барокко 0,9–1 × 1,8–2 м","Коробки — 12 шт.","Подсвечники — 3 шт.","Надпись (по согласованному макету)"]};
+    case "pzc":return {title:"Фотозона круглая",ref:"п. 2.2",items:[
+      "Круглый баннер с лепниной 2 × 2,2 м, хвоя по краю, шары, сосульки, гирлянда",
+      "Ели 2–2,2 м и 1,6–1,8 м (по 1 шт.)","Рама барокко 1–1,2 × 1,8 м",
+      "Коробки — 12 шт.","Подсвечники — 3 шт.","Надпись (по согласованному макету)"]};
+    case "tree":return {title:"Ель "+z.h,ref:"п. 2.3",items:["Коробки под елью — 10 шт.","Надпись рядом с елью"]};
+    case "comp":return {title:"Настольные композиции — "+z.n+" шт.",ref:"п. 2.4",items:["20 × 20 × 20 см, хвоя искусств./натур. 70/30"]};
+    case "garl":return {title:"Хвойная гирлянда на лестницу, 15 м",ref:"п. 2.1.6",items:["Шары золотые, белые, перламутровые"]};
+    case "big":return {title:"Украсить ель 6 м заказчика",ref:"п. 2.5",items:["Полный декор ели","Коробки — 30 шт.","Надпись рядом с елью"]};
+    case "street":return {title:"Уличные ели 2,5–3 м — 2 шт.",ref:"п. 2.6",items:["Кашпо серые — 2 шт.","Тёплая гирлянда, свисающие огни-сосульки"]};
+  }
+}
+
+function count(zones){
+  const c={pz:0,trees:0,comp:0,boxes:0,text:0};
+  zones.forEach(z=>{
+    if(z.t==="pzr"||z.t==="pzc"){c.pz++;c.trees+=2;c.boxes+=12;c.text++}
+    if(z.t==="tree"){c.trees++;c.boxes+=10;c.text++}
+    if(z.t==="street"){c.trees+=2}
+    if(z.t==="comp"){c.comp+=z.n}
+    if(z.t==="big"){c.boxes+=30;c.text++}
+  });
+  return c;
+}
+function sum(arr){return arr.reduce((a,c)=>{for(const k in c)a[k]=(a[k]||0)+c[k];return a},{})}
+
+function chips(c){
+  const out=[];
+  if(c.pz)out.push(`<span class="chip c-pz">Фотозоны <b>${c.pz}</b></span>`);
+  if(c.trees)out.push(`<span class="chip c-tr">Ели <b>${c.trees}</b></span>`);
+  if(c.comp)out.push(`<span class="chip c-cp">Композиции <b>${c.comp}</b></span>`);
+  if(c.boxes)out.push(`<span class="chip c-bx">Коробки <b>${c.boxes}</b></span>`);
+  return `<div class="chips">${out.join("")}</div>`;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+function mapUrl(addr){return "https://yandex.ru/maps/?text="+encodeURIComponent(addr)}
+
+// storage helpers (per-phone only)
+function get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}}
+function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+const routeOf={};ROUTES.forEach(r=>r.stops.forEach(s=>routeOf[s]=r.n));
+
+function zonesHtml(loc){
+  return loc.zones.map(z=>{const i=zoneInfo(z);return `<div class="zone z-${KIND[z.t]}">
+    <div class="zt">${esc(i.title)} <span class="ref">${i.ref}</span></div>
+    <div class="zw">${esc(z.w)}</div>
+    <ul>${i.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`}).join("")
+    + (loc.note?`<div class="note">${esc(loc.note)}</div>`:"");
+}
+function shortSub(c){
+  const p=[];if(c.pz)p.push(c.pz+" фотозон"+(c.pz>1?"ы":"а"));
+  const lone=c.trees-c.pz*2; if(lone>0)p.push(lone+" "+(lone===1?"ель":"ели")+" отдельно");
+  if(c.comp)p.push(c.comp+" композ.");
+  return p.join(" · ");
+}
+
+function renderRoutes(){
+  const start=get("start","Москва, Бибирево");
+  let h=`<div class="start"><label for="startInput">Точка выезда (склад)</label>
+    <input type="text" id="startInput" value="${esc(start)}" autocomplete="off">
+    <p class="muted">Укажите точный адрес склада — ссылки на маршрут обновятся.</p></div>`;
+  ROUTES.forEach(r=>{
+    const c=sum(r.stops.map(s=>count(LOCS[s].zones)));
+    const pts=[start,...r.stops.map(s=>LOCS[s].addr),start];
+    const url="https://yandex.ru/maps/?rtt=auto&rtext="+pts.map(encodeURIComponent).join("~");
+    const doneN=r.stops.filter(s=>get("done-"+s,"0")==="1").length;
+    const loadOrder=[...r.stops].reverse().map(s=>LOCS[s].name.split(",")[0]).join(" → ");
+    h+=`<article class="route">
+      <div class="rhead">
+        <div class="rtitle"><span class="rnum">Маршрут ${r.n}</span><h2>${r.title}</h2><span class="rdate">${r.date} · ${doneN}/${r.stops.length}</span></div>
+        ${chips(c)}
+        <a class="btn" href="${url}" target="_blank" rel="noopener">Весь маршрут в Яндекс.Картах ↗</a>
+        <div class="load"><b>Грузить в машину:</b> сначала то, что выгружаем последним — ${esc(loadOrder)}.<br>${esc(r.tip)}</div>
+      </div>
+      <ol class="stops">${r.stops.map((s,i)=>{const L=LOCS[s],cc=count(L.zones),d=get("done-"+s,"0")==="1";
+        return `<li><details class="stop${d?" done":""}" data-id="${s}">
+          <summary><span class="seq">${i+1}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
+          <div class="sbody">${chips(cc)}${zonesHtml(L)}
+            <div class="addr">${esc(L.addr)}</div>
+            <div class="actions"><a class="btn ghost" href="${mapUrl(L.addr)}" target="_blank" rel="noopener">Навигатор ↗</a>
+            <label class="check"><input type="checkbox" id="chk-${s}" data-done="${s}" ${d?"checked":""}> Смонтировано</label></div>
+          </div></details></li>`}).join("")}</ol>
+    </article>`;
+  });
+  h+=`<p class="muted">Отметки «Смонтировано» сохраняются только на этом телефоне.</p>`;
+  document.getElementById("routes").innerHTML=h;
+}
+
+function renderList(q=""){
+  const qq=q.trim().toLowerCase();
+  let h=`<input type="search" id="search" placeholder="Поиск по адресу или элементу" value="${esc(q)}" autocomplete="off">`;
+  const ids=Object.keys(LOCS).filter(id=>{
+    if(!qq)return true; const L=LOCS[id];
+    const txt=(L.name+" "+L.addr+" "+L.zones.map(z=>{const i=zoneInfo(z);return i.title+" "+z.w}).join(" ")).toLowerCase();
+    return txt.includes(qq)});
+  h+=`<p class="muted">${ids.length} из ${Object.keys(LOCS).length} точек (18 адресов по ТЗ: Неглинная А, Б, В — одна точка)</p>`;
+  h+=`<div class="stops">`+ids.map(id=>{const L=LOCS[id],cc=count(L.zones);
+    return `<details class="stop"><summary><span class="rbadge">М${routeOf[id]}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
+    <div class="sbody" style="padding-left:12px">${chips(cc)}${zonesHtml(L)}<div class="addr">${esc(L.addr)}</div>
+    <div class="actions"><a class="btn ghost" href="${mapUrl(L.addr)}" target="_blank" rel="noopener">Навигатор ↗</a></div></div></details>`}).join("")+`</div>`;
+  const el=document.getElementById("list");el.innerHTML=h;
+  const s=document.getElementById("search");
+  s.addEventListener("input",e=>{const pos=e.target.selectionStart;renderList(e.target.value);const n=document.getElementById("search");n.focus();n.setSelectionRange(pos,pos)});
+}
+
+function renderTotals(){
+  const all=Object.values(LOCS).flatMap(L=>L.zones);
+  const t=sum(Object.values(LOCS).map(L=>count(L.zones)));
+  const pzr=all.filter(z=>z.t==="pzr").length,pzc=all.filter(z=>z.t==="pzc").length;
+  const heights={};
+  const add=(k,n)=>heights[k]=(heights[k]||0)+n;
+  add("1,6–1,8 м · фотозоны",pzr+pzc);add("2–2,2 м · фотозоны",pzr+pzc);
+  all.filter(z=>z.t==="tree").forEach(z=>add(z.h.replace(/ \(.*\)/,""),1));
+  add("2,5–3 м · улица, в кашпо",2);
+  const order=["0,5–0,6 м","1,6–1,8 м · фотозоны","2–2,1 м","2–2,2 м · фотозоны","2,2–2,4 м","2,3–2,5 м","2,4 м","2,5–3 м · улица, в кашпо","2,7 м","3 м"];
+  const row=(k,v,s)=>`<div class="row"><div class="k">${k}${s?`<small>${s}</small>`:""}</div><div class="v">${v}</div></div>`;
+  let h=`<h2>Ели</h2><div class="tbl">${order.filter(k=>heights[k]).map(k=>row(k,heights[k]+" шт.")).join("")}
+    <div class="row total"><div class="k">Всего елей наших</div><div class="v">${t.trees} шт.</div></div>
+    ${row("Ель 6 м заказчика","украсить","Неглинная 12В, фойе. Собирает заказчик")}</div>`;
+  h+=`<h2>Фотозоны</h2><div class="tbl">
+    ${row("Прямоугольные баннеры",pzr+" шт.","2,5–3 × 2,2–2,5 м, с люстрой")}
+    ${row("Люстры из стекляруса",pzr+" шт.")}
+    ${row("Круглые баннеры",pzc+" шт.","2 × 2,2 м")}
+    ${row("Рамы барокко 0,9–1 × 1,8–2 м",pzr+" шт.","для прямоугольных")}
+    ${row("Рамы барокко 1–1,2 × 1,8 м",pzc+" шт.","для круглых")}
+    ${row("Подсвечники",(pzr+pzc)*3+" шт.","по 3 на фотозону")}</div>`;
+  h+=`<h2>Прочее</h2><div class="tbl">
+    ${row("Подарочные коробки",t.boxes+" шт.","12 × фотозона, 10 × ель, 30 × ель 6 м")}
+    ${row("Настольные композиции",t.comp+" шт.","20 × 20 × 20 см")}
+    ${row("Надписи (макеты на согласование)",t.text+" шт.")}
+    ${row("Хвойная гирлянда",'15 м',"лестница Неглинная 12А")}
+    ${row("Кашпо серые",'2 шт.',"уличные ели Неглинная 12В")}</div>
+    <p class="muted">Хвоя везде: натуральная + искусственная. Фотозоны и ели 60/40 (натуральная/искусственная), композиции, ель 6 м и уличные — 30/70.</p>`;
+  document.getElementById("totals").innerHTML=h;
+}
+
+function renderPlan(){
+  const steps=[
+    ["до 31.10","Согласования с заказчиком","Цвет фона баннеров (прямоугольных и круглых), тексты, шрифты и цвета всех надписей, спорные пункты ТЗ (ниже). Пропуска, время заезда, разгрузка и лифты по каждому адресу."],
+    ["01–14.11","Закупка и производство","Баннеры, рамы, люстры, коробки, подсвечники, ели, декор, гирлянды. Изготовление надписей по утверждённым макетам."],
+    ["14–19.11","Сборка на складе","Собрать и украсить ели и композиции. Разложить комплекты по точкам, подписать короба: «М1-2 Неглинная», и т. д."],
+    ["19–20.11","Натуральная хвоя","Нобилис и пихту брать как можно ближе к монтажу, чтобы простояли до января."],
+    ["21–22.11","Монтаж, маршруты 1–2","Центр и Замоскворечье. На каждой точке — фотоотчёт и подпись ответственного."],
+    ["28–29.11","Монтаж, маршруты 3–4","Север, северо-запад, запад и область."],
+    ["дек – янв","Контроль","Проверка состояния натуральной хвои и гирлянд, подсушенное заменить."],
+    ["16–17.01","Демонтаж, маршруты 1–2","Те же маршруты, порядок погрузки обратный."],
+    ["23–24.01","Демонтаж, маршруты 3–4","Закрыть акты."]
+  ];
+  const qs=[
+    "Монтаж в ТЗ указан двумя окнами: 21–22.11 и 28–29.11. Можно ли делить адреса на два окна, как в этом плане, или всё должно стоять к 22.11? Тогда нужны две бригады параллельно.",
+    "Котельническая наб., 33 — с корпусом 1 или без?",
+    "Композиция на Житной, 9 этаж (1 шт.), а мини-ель на 9 этаже — на Балчуге. Так и задумано?",
+    "Когда заказчик соберёт ель 6 м на Неглинной 12В?",
+    "В чём ставим ели п. 2.3 — подставки, кашпо? Кашпо указаны только для уличных.",
+    "Точный адрес склада в Бибиреве и время выезда."
+  ];
+  document.getElementById("plan").innerHTML=`<h2>План действий</h2>
+    <ul class="steps">${steps.map(s=>`<li class="step"><div class="when">${s[0]}</div><div><h3>${s[1]}</h3><p>${s[2]}</p></div></li>`).join("")}</ul>
+    <h2>Уточнить у заказчика</h2><ol class="q">${qs.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`;
+}
+
+function renderStats(){
+  const t=sum(Object.values(LOCS).map(L=>count(L.zones)));
+  document.getElementById("stats").innerHTML=
+    `<span class="stat"><b>${Object.keys(LOCS).length}</b>точек</span><span class="stat"><b>${ROUTES.length}</b>маршрута</span>`+
+    `<span class="stat"><b>${t.pz}</b>фотозон</span><span class="stat"><b>${t.trees}</b>елей</span><span class="stat"><b>${t.comp}</b>композиции</span>`;
+}
+
+document.addEventListener("change",e=>{
+  if(e.target.dataset.done){const id=e.target.dataset.done;set("done-"+id,e.target.checked?"1":"0");
+    const openId=id;renderRoutes();const d=document.querySelector(`#routes details[data-id="${openId}"]`);if(d)d.open=true;}
+  if(e.target.id==="startInput"){set("start",e.target.value||"Москва, Бибирево");renderRoutes();}
+});
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b?"true":"false"));
+  ["routes","list","totals","plan"].forEach(id=>document.getElementById(id).hidden=id!==b.dataset.tab);
+  set("tab",b.dataset.tab);window.scrollTo(0,0);
+}));
+
+renderStats();renderRoutes();renderList();renderTotals();renderPlan();
+const savedTab=get("tab","routes");const tb=document.querySelector(`.tabs button[data-tab="${savedTab}"]`);if(tb&&savedTab!=="routes")tb.click();
+</script>
+</body>
+</html>
