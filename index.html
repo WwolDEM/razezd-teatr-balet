@@ -33,8 +33,8 @@ h1{font:700 16px/1.2 var(--f-display);margin:4px 0 8px}
 .stat{flex:none}
 .stat{font:500 12px/1 var(--f-body);padding:6px 9px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
 .stat b{font:500 12px/1 var(--f-mono);margin-right:3px}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
-.tabs button{all:unset;cursor:pointer;text-align:center;font:600 13px/1 var(--f-body);padding:10px 4px;border-radius:9px;color:var(--muted)}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{all:unset;cursor:pointer;text-align:center;font:600 12px/1 var(--f-body);padding:10px 2px;border-radius:9px;color:var(--muted)}
 .tabs button[aria-selected="true"]{background:var(--pine);color:#FFFFFF}
 .tabs button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,.btn:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
 main{padding-top:8px;display:grid;gap:18px}
@@ -114,7 +114,54 @@ details[open] .caret{transform:rotate(90deg)}
 .crew.a .ctag{color:var(--gold)} .crew.b .ctag{color:var(--pine)}
 .crew.a .seq{background:var(--gold-soft);color:var(--gold)}
 .crew.a .stop.done .seq{background:var(--gold);color:#FFFFFF}
-@media (prefers-reduced-motion:reduce){.caret{transition:none}}
+.prog{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px}
+.prog-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.prog .lbl{font:600 11px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prog .big{font:700 30px/1 var(--f-display);margin-top:6px}
+.prog .big small{font:600 14px var(--f-body);color:var(--muted);margin-left:4px}
+.prog .when2{font:500 12px/1.4 var(--f-mono);color:var(--muted);text-align:right}
+.barrow{display:grid;gap:4px}
+.barrow .bl{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.barrow .bl b{font:500 12.5px var(--f-mono);color:var(--ink)}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pine);border-radius:99px;transition:width .3s}
+.bar.a i{background:var(--gold)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{all:unset;cursor:pointer;text-align:center;font:600 13px/1 var(--f-body);padding:9px 4px;border-radius:9px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.mapbox svg{display:block;width:100%;height:auto}
+.m-mkad{fill:var(--pine-soft);stroke:var(--muted);stroke-width:1.2;stroke-dasharray:5 4}
+.m-ttk{fill:none;stroke:var(--line);stroke-width:1.5}
+.m-sad{fill:var(--bg);stroke:var(--line);stroke-width:2}
+.m-lbl{font:500 9.5px var(--f-body);fill:var(--muted)}
+.m-name{font:600 10px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
+.r-a{fill:none;stroke:var(--gold);stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.r-b{fill:none;stroke:var(--pine);stroke-width:2.6;stroke-dasharray:6 4;stroke-linejoin:round;stroke-linecap:round}
+.mk-a{fill:var(--gold)} .mk-b{fill:var(--pine)} .mk-ghost{fill:var(--muted);fill-opacity:.35}
+.mk-t{fill:#FFFFFF;font:600 9px var(--f-mono);text-anchor:middle;dominant-baseline:central}
+.mk-home{fill:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted);padding:10px 12px;border-top:1px solid var(--line)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:18px;height:0;border-top:3px solid var(--gold)}
+.legend i.b{border-top:3px dashed var(--pine)}
+.legend i.h{width:10px;height:10px;border:0;border-radius:2px;background:var(--ink)}
+.maplist{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.maplist ol{margin:0;padding-left:18px;font-size:13px;display:grid;gap:2px}
+.maplist .ctag{display:block;margin-bottom:6px}
+.maplist .a .ctag{color:var(--gold)} .maplist .b .ctag{color:var(--pine)}
+.pk{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.pk.a{border-top:4px solid var(--gold)} .pk.b{border-top:4px solid var(--pine)}
+.pk-h{padding:12px;display:grid;gap:8px}
+.pk-g{font:600 11px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 12px 4px}
+.pk-row{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line);cursor:pointer}
+.pk-row input{width:19px;height:19px;accent-color:var(--pine);margin:0}
+.pk.a .pk-row input{accent-color:var(--gold)}
+.pk-row .q{font:500 14px var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pk-row.on .t{text-decoration:line-through;color:var(--muted)}
+.pk-row .t small{display:block;color:var(--muted);font-size:12px}
+@media (prefers-reduced-motion:reduce){.caret{transition:none}.bar i{transition:none}}
 </style>
 </head>
 <body>
@@ -128,16 +175,19 @@ details[open] .caret{transform:rotate(90deg)}
   <div class="tabbar">
     <div class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-tab="routes">Маршруты</button>
+      <button role="tab" aria-selected="false" data-tab="map">Карта</button>
+      <button role="tab" aria-selected="false" data-tab="pack">Погрузка</button>
       <button role="tab" aria-selected="false" data-tab="list">Адреса</button>
-      <button role="tab" aria-selected="false" data-tab="totals">Итого</button>
       <button role="tab" aria-selected="false" data-tab="plan">План</button>
     </div>
   </div>
 
   <main>
     <section id="routes" class="sec"></section>
-    <section id="list" class="sec" hidden></section>
+    <section id="map" class="sec" hidden></section>
+    <section id="pack" class="sec" hidden></section>
     <section id="totals" class="sec" hidden></section>
+    <section id="list" class="sec" hidden></section>
     <section id="plan" class="sec" hidden></section>
   </main>
 </div>
@@ -196,16 +246,16 @@ const LOCS = {
 };
 
 const DAYS = [
-  {date:"Сб 21.11",short:"21.11",dow:"Сб",win:1,
+  {date:"Сб 21.11",short:"21.11",dow:"Сб",win:1,iso:"2026-11-21",
    A:{title:"Неглинная",stops:["neg"],tip:"Весь день на Неглинной: фотозоны в корп. А и Б, гирлянда на лестнице, 16 композиций в кафе корп. В."},
    B:{title:"Центр",stops:["selivers","nastas","neg"],tip:"На Неглинной: ели в кафе «В» и каминном зале, 2 уличные ели в кашпо, украшение ели 6 м заказчика."}},
-  {date:"Вс 22.11",short:"22.11",dow:"Вс",win:1,
+  {date:"Вс 22.11",short:"22.11",dow:"Вс",win:1,iso:"2026-11-22",
    A:{title:"Замоскворечье",stops:["kotel","balchug","zhitnaya","leninsky"],tip:"Четыре фотозоны подряд — самый плотный день бригады А."},
    B:{title:"Замоскворечье",stops:["balchug","zhitnaya","mytnaya","leninsky"],tip:"На Балчуге и Житной работаете одновременно с бригадой А: они на входной группе, вы в кафе и музее."}},
-  {date:"Сб 28.11",short:"28.11",dow:"Сб",win:2,
+  {date:"Сб 28.11",short:"28.11",dow:"Сб",win:2,iso:"2026-11-28",
    A:{title:"Северо-запад",stops:["pravdy","volok","svobody"],tip:"Обратно со Свободы удобнее по МКАД."},
    B:{title:"Север",stops:["mira","pravdy","volok"],tip:"На Правды и Волоколамском — вслед за бригадой А, ели и композиции в кафе."}},
-  {date:"Вс 29.11",short:"29.11",dow:"Вс",win:2,
+  {date:"Вс 29.11",short:"29.11",dow:"Вс",win:2,iso:"2026-11-29",
    A:{title:"Запад и область",stops:["bagrat","mosfilm","zven"],tip:"Звенигородка последней: самый дальний адрес."},
    B:{title:"Запад и область",stops:["mosfilm","odin","zven"],tip:"Одинцово по пути в Звенигородку. В Звенигородке 20 композиций в кафе."}}
 ];
@@ -279,9 +329,9 @@ function shortSub(c){
 
 function renderRoutes(){
   const start=get("start2","Москва, ул. Пришвина, 26");
-  let di=+get("day","0"); if(!(di>=0&&di<DAYS.length))di=0;
+  const di=curDay();
   const day=DAYS[di];
-  let h=`<div class="days" role="group" aria-label="День монтажа">${DAYS.map((d,i)=>`<button type="button" data-day="${i}" aria-pressed="${i===di}"><b>${d.short}</b><span>${d.dow} · окно ${d.win}</span></button>`).join("")}</div>
+  let h=`<div id="progCard">${progressCard()}</div>`+daysPills(di)+`
     <div class="start"><label for="startInput">Склад</label>
     <input type="text" id="startInput" value="${esc(start)}" autocomplete="off">
     <div class="depart"><span>Выезд обеих бригад <b>8:00</b></span><span>${day.date}</span></div></div>`;
@@ -319,6 +369,129 @@ function renderRoutes(){
   });
   h+=`<p class="muted">Демонтаж (16–17.01 и 23–24.01) — теми же маршрутами. Отметки «Смонтировано» сохраняются только на этом телефоне.</p>`;
   document.getElementById("routes").innerHTML=h;
+}
+
+
+// ---------- shared day state ----------
+function curDay(){let d=+get("day","0");return (d>=0&&d<DAYS.length)?d:0}
+function daysPills(di){return `<div class="days" role="group" aria-label="День монтажа">${DAYS.map((d,i)=>`<button type="button" data-day="${i}" aria-pressed="${i===di}"><b>${d.short}</b><span>${d.dow} · окно ${d.win}</span></button>`).join("")}</div>`}
+function plural(n,a,b,c){const m=n%10,h=n%100;return (m===1&&h!==11)?a:(m>=2&&m<=4&&(h<12||h>14))?b:c}
+function mskYmd(dt){return new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Moscow",year:"numeric",month:"2-digit",day:"2-digit"}).format(dt)}
+function mskStart(iso){return new Date(iso+"T08:00:00+03:00")}
+
+// ---------- countdown + progress ----------
+function crewStops(){const out=[];DAYS.forEach((d,di)=>["A","B"].forEach(cr=>d[cr].stops.forEach(s=>out.push({di,cr,s}))));return out}
+function isDone(x){return get(`done2-${x.di}-${x.cr}-${x.s}`,"0")==="1"}
+function bar(label,done,total,cls){const pct=total?Math.round(done/total*100):0;
+  return `<div class="barrow"><div class="bl"><span>${label}</span><b>${done} / ${total}</b></div><div class="bar ${cls||""}"><i style="width:${pct}%"></i></div></div>`}
+function progressCard(){
+  const now=new Date(), today=mskYmd(now);
+  const all=crewStops(), doneAll=all.filter(isDone).length;
+  const ti=DAYS.findIndex(d=>d.iso===today);
+  let lbl,big,side;
+  const left=t=>{const ms=t-now;const d=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5);
+    return d>=1?`${d}<small>${plural(d,"день","дня","дней")} ${hh} ч</small>`:`${hh}<small>ч ${Math.floor(ms%36e5/6e4)} мин</small>`};
+  const w1=mskStart(DAYS[0].iso), w2=mskStart(DAYS[2].iso), dem=mskStart("2027-01-16");
+  if(ti>=0&&now>=mskStart(DAYS[ti].iso)){lbl="Сегодня монтаж";big=DAYS[ti].date;side=`окно ${DAYS[ti].win}<br>выезд был в 8:00`}
+  else if(now<w1){lbl="До монтажа";big=left(w1);side="Сб 21.11<br>выезд в 8:00"}
+  else if(now<w2){lbl="До второго окна";big=left(w2);side="Сб 28.11<br>выезд в 8:00"}
+  else if(now<dem){lbl="Монтаж завершён · до демонтажа";big=left(dem);side="Сб 16.01"}
+  else {lbl="Демонтаж";big="16–24.01";side="теми же маршрутами"}
+  let bars="";
+  if(ti>=0){const d=DAYS[ti];["A","B"].forEach(cr=>{const st=d[cr].stops.map(s=>({di:ti,cr,s}));bars+=bar(CREW[cr],st.filter(isDone).length,st.length,cr==="A"?"a":"")})}
+  bars+=bar("Весь монтаж, выездов",doneAll,all.length);
+  return `<div class="prog"><div class="prog-top"><div><div class="lbl">${lbl}</div><div class="big">${big}</div></div><div class="when2">${side}</div></div>${bars}</div>`;
+}
+function refreshProg(){const el=document.getElementById("progCard");if(el)el.innerHTML=progressCard()}
+
+// ---------- map ----------
+const GEO={start:[55.884,37.603],neg:[55.7617,37.6213],selivers:[55.7697,37.6337],nastas:[55.7676,37.6036],kotel:[55.7473,37.6426],
+  balchug:[55.7478,37.6263],zhitnaya:[55.7318,37.6143],mytnaya:[55.7278,37.6157],leninsky:[55.7293,37.6066],mira:[55.8000,37.6370],
+  pravdy:[55.7867,37.5818],volok:[55.8180,37.4430],svobody:[55.8640,37.4360],mosfilm:[55.7300,37.5330],bagrat:[55.7430,37.4980],
+  odin:[55.6780,37.2650],zven:[55.7000,37.2150]};
+const SHORT={neg:"Неглинная",selivers:"Селиверстов",nastas:"Настасьинский",kotel:"Котельническая",balchug:"Балчуг",zhitnaya:"Житная",
+  mytnaya:"Мытная",leninsky:"Ленинский",mira:"Пр. Мира",pravdy:"Правды",volok:"Волоколамское",svobody:"Свободы",mosfilm:"Мосфильмовская",
+  bagrat:"Багратионовский",odin:"Одинцово",zven:"Звенигородка ← ~40 км"};
+const VIEWS={
+  all:{lon0:37.10,lon1:37.90,lat0:55.56,lat1:55.93,W:360,H:300},
+  center:{lon0:37.572,lon1:37.66,lat0:55.722,lat1:55.807,W:360,H:420}};
+function projector(v){const k=Math.cos(55.75*Math.PI/180);const xr=(v.lon1-v.lon0)*k,yr=v.lat1-v.lat0;const sc=Math.min(v.W/xr,v.H/yr);
+  const ox=(v.W-xr*sc)/2,oy=(v.H-yr*sc)/2;
+  return {p:(lat,lon)=>[ox+(lon-v.lon0)*k*sc,oy+(v.lat1-lat)*sc],rx:dl=>dl*k*sc,ry:dl=>dl*sc}}
+function inView(v,id){const [la,lo]=GEO[id];return lo>=v.lon0&&lo<=v.lon1&&la>=v.lat0&&la<=v.lat1}
+function renderMap(){
+  const di=curDay(),day=DAYS[di],vk=get("mapv","all")==="center"?"center":"all";
+  const usedIds=[...new Set([...day.A.stops,...day.B.stops])],central=usedIds.filter(id=>inView(VIEWS.center,id));
+  let v=VIEWS[vk];
+  if(vk==="center"&&central.length){const la=central.map(id=>GEO[id][0]).concat(55.752),lo=central.map(id=>GEO[id][1]).concat(37.6175);
+    let a0=Math.min(...la),a1=Math.max(...la),o0=Math.min(...lo),o1=Math.max(...lo);const pa=Math.max(0.006,(0.022-(a1-a0))/2),po=Math.max(0.012,(0.04-(o1-o0))/2);
+    v={lat0:a0-pa,lat1:a1+pa,lon0:o0-po,lon1:o1+po,W:360,H:360}}
+  const P=projector(v);
+  const f=n=>n.toFixed(1);
+  const ell=(cls,lat,lon,dla,dlo)=>{const [x,y]=P.p(lat,lon);return `<ellipse class="${cls}" cx="${f(x)}" cy="${f(y)}" rx="${f(P.rx(dlo))}" ry="${f(P.ry(dla))}"/>`};
+  let g=ell("m-mkad",55.745,37.6185,0.17,0.236)+ell("m-ttk",55.752,37.617,0.043,0.077)+ell("m-sad",55.7535,37.6205,0.0215,0.0385);
+  const lab=(t,lat,lon,dx,dy,anchor)=>{const [x,y]=P.p(lat,lon);return `<text class="m-lbl" x="${f(x+(dx||0))}" y="${f(y+(dy||0))}" text-anchor="${anchor||"middle"}">${t}</text>`};
+  if(vk==="all"){g+=lab("МКАД",55.90,37.70,0,-4);g+=lab("Садовое",55.7535,37.6205,0,P.ry(0.0215)+11)}
+  else{g+=lab("Садовое кольцо",55.7535,37.6205,0,-P.ry(0.0215)-5);g+=lab("ТТК",55.795,37.617,0,0);
+    const [kx,ky]=P.p(55.7520,37.6175);g+=`<rect x="${f(kx-4)}" y="${f(ky-4)}" width="8" height="8" rx="1" class="mk-ghost"/><text class="m-lbl" x="${f(kx)}" y="${f(ky+14)}" text-anchor="middle">Кремль</text>`}
+  const used=new Set([...day.A.stops,...day.B.stops]);
+  Object.keys(LOCS).forEach(id=>{if(used.has(id))return;const [x,y]=P.p(...GEO[id]);g+=`<circle class="mk-ghost" cx="${f(x)}" cy="${f(y)}" r="3.5"/>`});
+  ["A","B"].forEach(cr=>{const pts=["start",...day[cr].stops].map(id=>P.p(...GEO[id]).map(f).join(",")).join(" ");g+=`<polyline class="r-${cr.toLowerCase()}" points="${pts}"/>`});
+  const both=new Set(day.A.stops.filter(s=>day.B.stops.includes(s)));
+  const named=new Set();
+  ["A","B"].forEach(cr=>day[cr].stops.forEach((id,i)=>{let [x,y]=P.p(...GEO[id]);if(both.has(id))x+=cr==="A"?-8:8;
+    g+=`<circle class="mk-${cr.toLowerCase()}" cx="${f(x)}" cy="${f(y)}" r="8"/><text class="mk-t" x="${f(x)}" y="${f(y)}">${i+1}</text>`;
+    const show=vk==="center"?inView(v,id):!inView(VIEWS.center,id);
+    if(show&&!named.has(id)){named.add(id);const [lx,ly]=P.p(...GEO[id]);const right=vk==="center"?lx<v.W-120:(id!=="svobody"&&id!=="volok");
+      if(!right&&vk==="center"){g+=`<text class="m-name" x="${f(lx)}" y="${f(ly+22)}" text-anchor="middle">${SHORT[id]}</text>`}
+      else{const dx=(both.has(id)?18:12)*(right?1:-1);g+=`<text class="m-name" x="${f(lx+dx)}" y="${f(ly+3.5)}" text-anchor="${right?"start":"end"}">${SHORT[id]}</text>`}}}));
+  if(vk==="all"){const n=day.A.stops.concat(day.B.stops).filter(id=>inView(VIEWS.center,id));
+    if(n.length){g+=`<text class="m-lbl" x="${f(P.p(55.7535,37.66)[0]+12)}" y="${f(P.p(55.7535,37.66)[1]+4)}" text-anchor="start">центр: ${new Set(n).size} ${plural(new Set(n).size,"точка","точки","точек")} → «Центр»</text>`}}
+  const [hx,hy]=P.p(...GEO.start);g+=`<rect class="mk-home" x="${f(hx-7)}" y="${f(hy-7)}" width="14" height="14" rx="3"/><text class="m-name" x="${f(hx+12)}" y="${f(hy+4)}">Склад · Пришвина, 26</text>`;
+  const list=cr=>`<div class="${cr.toLowerCase()}"><span class="ctag">${CREW[cr]}</span><ol>${day[cr].stops.map(id=>`<li>${esc(LOCS[id].name)}</li>`).join("")}</ol></div>`;
+  document.getElementById("map").innerHTML=daysPills(di)+
+    `<div class="seg" role="group" aria-label="Масштаб"><button type="button" data-mapv="all" aria-pressed="${vk==="all"}">Вся Москва</button><button type="button" data-mapv="center" aria-pressed="${vk==="center"}">Центр</button></div>
+    <div class="mapbox"><svg viewBox="0 0 ${v.W} ${v.H}" role="img" aria-label="Схема маршрутов на ${day.date}">${g}</svg>
+    <div class="legend"><span><i></i>Бригада А</span><span><i class="b"></i>Бригада Б</span><span><i class="h"></i>Склад</span></div></div>
+    ${vk==="center"&&!central.length?`<p class="muted">В этот день точек в центре нет — смотрите «Вся Москва».</p>`:""}
+    <div class="maplist">${list("A")}${list("B")}</div>
+    <p class="muted">Это схема для ориентира: линии показывают порядок объезда, а не дороги. Точный путь строит навигатор во вкладке «Маршруты».</p>`;
+}
+
+// ---------- packing checklist ----------
+function packItems(di,cr){
+  const day=DAYS[di],it=new Map();
+  const add=(grp,label,n,unit,sub)=>{const k=grp+"|"+label;const o=it.get(k)||{grp,label,n:0,unit,sub};o.n+=n;it.set(k,o)};
+  day[cr].stops.forEach(s=>LOCS[s].zones.filter(z=>crewOf(z)===cr).forEach(z=>{
+    if(z.t==="pzr"){add("Крупное","Баннер прямоугольный",1,"шт.","2,5–3 × 2,2–2,5 м, с хвоей");add("Крупное","Рама барокко 0,9–1 × 1,8–2 м",1,"шт.");add("Декор","Люстра из стекляруса",1,"шт.")}
+    if(z.t==="pzc"){add("Крупное","Баннер круглый",1,"шт.","2 × 2,2 м, с хвоей");add("Крупное","Рама барокко 1–1,2 × 1,8 м",1,"шт.")}
+    if(z.t==="pzr"||z.t==="pzc"){add("Ели","Ель 2–2,2 м (фотозона)",1,"шт.");add("Ели","Ель 1,6–1,8 м (фотозона)",1,"шт.");add("Ели","Подставки под ели",2,"шт.");
+      add("Декор","Подарочные коробки",12,"шт.");add("Декор","Подсвечники",3,"шт.");add("Декор","Надписи",1,"шт.")}
+    if(z.t==="tree"){add("Ели","Ель "+z.h.replace(/ \(.*\)/,""),1,"шт.",z.h.includes("(")?z.h.match(/\((.*)\)/)[1]:"");add("Ели","Подставки под ели",1,"шт.");add("Декор","Подарочные коробки",10,"шт.");add("Декор","Надписи",1,"шт.")}
+    if(z.t==="street"){add("Ели","Ель уличная 2,5–3 м",2,"шт.");add("Крупное","Кашпо серое",2,"шт.");add("Декор","Гирлянда тёплая + огни-сосульки",1,"компл.","на 2 уличные ели")}
+    if(z.t==="big"){add("Декор","Декор для ели 6 м",1,"компл.","шары, бусы, сосульки, кисточки, балерины, люстры, маски, пуанты, гирлянда");add("Декор","Подарочные коробки",30,"шт.");add("Декор","Надписи",1,"шт.")}
+    if(z.t==="comp"){add("Декор","Настольные композиции",z.n,"шт.","20 × 20 × 20 см")}
+    if(z.t==="garl"){add("Декор","Хвойная гирлянда",15,"м","лестница Неглинной");add("Декор","Шары для гирлянды",1,"компл.","золото, белый, перламутр")}
+  }));
+  ["Удлинители и переноски для гирлянд","Запас шаров, бус и хвои на подмену","Стяжки, проволока, ножницы, секатор","Стремянка","Плёнка и тряпки для защиты пола"].forEach(x=>add("С собой",x,0,""));
+  const order=["Крупное","Ели","Декор","С собой"];
+  return [...it.values()].sort((a,b)=>order.indexOf(a.grp)-order.indexOf(b.grp));
+}
+function renderPack(){
+  const di=curDay(),day=DAYS[di];
+  let h=daysPills(di);
+  ["A","B"].forEach(cr=>{
+    const items=packItems(di,cr);const key=x=>`pack-${di}-${cr}-${x.label}`;
+    const done=items.filter(x=>get(key(x),"0")==="1").length;
+    let rows="",grp="";
+    items.forEach((x,i)=>{if(x.grp!==grp){grp=x.grp;rows+=`<div class="pk-g">${grp}</div>`}
+      const on=get(key(x),"0")==="1";const id=`pk-${di}-${cr}-${i}`;
+      rows+=`<label class="pk-row${on?" on":""}" for="${id}"><input type="checkbox" id="${id}" data-pack="${esc(key(x))}" ${on?"checked":""}><span class="t">${esc(x.label)}${x.sub?`<small>${esc(x.sub)}</small>`:""}</span><span class="q">${x.n?x.n+" "+x.unit:""}</span></label>`});
+    h+=`<article class="pk ${cr.toLowerCase()}"><div class="pk-h"><span class="ctag" style="color:var(--${cr==="A"?"gold":"pine"})">${CREW[cr]}</span>
+      <div class="rtitle"><h2>${day.date} · ${day[cr].title}</h2></div>${bar("Погружено",done,items.length,cr==="A"?"a":"")}</div>${rows}</article>`;
+  });
+  h+=`<p class="muted">Галочки сохраняются только на этом телефоне. «С собой» — наш рекомендуемый набор, его в ТЗ нет. Крепить к стенам и поверхностям по ТЗ запрещено.</p><h2>Всего по проекту</h2>`;
+  document.getElementById("pack").innerHTML=h;
 }
 
 function renderList(q=""){
@@ -400,20 +573,25 @@ function renderStats(){
 document.addEventListener("change",e=>{
   if(e.target.dataset.done){const k=e.target.dataset.done;set(k,e.target.checked?"1":"0");
     renderRoutes();const d=document.querySelector(`#routes details[data-key="${k}"]`);if(d)d.open=true;}
+  if(e.target.dataset.pack){set(e.target.dataset.pack,e.target.checked?"1":"0");const y=window.scrollY;renderPack();window.scrollTo(0,y);}
   if(e.target.id==="startInput"){set("start2",e.target.value||"Москва, ул. Пришвина, 26");renderRoutes();}
 });
 document.addEventListener("click",e=>{
+  const mv=e.target.closest("[data-mapv]");if(mv){set("mapv",mv.dataset.mapv);renderMap();return}
   const b=e.target.closest("[data-day]");if(!b)return;
-  set("day",b.dataset.day);renderRoutes();
+  set("day",b.dataset.day);renderRoutes();renderMap();renderPack();
 });
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b?"true":"false"));
-  ["routes","list","totals","plan"].forEach(id=>document.getElementById(id).hidden=id!==b.dataset.tab);
+  const show={routes:["routes"],map:["map"],pack:["pack","totals"],list:["list"],plan:["plan"]}[b.dataset.tab]||["routes"];
+  ["routes","map","pack","totals","list","plan"].forEach(id=>document.getElementById(id).hidden=!show.includes(id));
   set("tab",b.dataset.tab);window.scrollTo(0,0);
 }));
 
-renderStats();renderRoutes();renderList();renderTotals();renderPlan();
-const savedTab=get("tab","routes");const tb=document.querySelector(`.tabs button[data-tab="${savedTab}"]`);if(tb&&savedTab!=="routes")tb.click();
+(function(){const t=mskYmd(new Date());const i=DAYS.findIndex(d=>d.iso===t);if(i>=0)set("day",String(i))})();
+renderStats();renderRoutes();renderMap();renderPack();renderList();renderTotals();renderPlan();
+setInterval(refreshProg,60000);
+let savedTab=get("tab","routes");if(savedTab==="totals")savedTab="pack";const tb=document.querySelector(`.tabs button[data-tab="${savedTab}"]`);if(tb&&savedTab!=="routes")tb.click();
 </script>
 </body>
 </html>
