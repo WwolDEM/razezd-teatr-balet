@@ -151,8 +151,7 @@ const LOCS = {
     {t:"street",w:"корп. В, уличная входная группа"}],
     note:"Ель 6 м в фойе заказчик собирает в этот же день. Бригада Б украшает её после сборки — заранее созвониться и узнать время."},
   nastas:{name:"Настасьинский пер., 5",addr:"Москва, Настасьинский переулок, 5",zones:[{t:"tree",h:"2–2,1 м",w:"входная группа"}]},
-  kotel:{name:"Котельническая наб., 33",addr:"Москва, Котельническая набережная, 33",zones:[{t:"pzc",w:"входная группа"}],
-    note:"Корпус уточняется: в п. 1.2 «д. 33», в п. 2.2 «д. 33, корп. 1»."},
+  kotel:{name:"Котельническая наб., 33",addr:"Москва, Котельническая набережная, 33",zones:[{t:"pzc",w:"входная группа"}]},
   balchug:{name:"Балчуг, 2",addr:"Москва, улица Балчуг, 2",zones:[
     {t:"pzr",w:"входная группа"},
     {t:"tree",h:"2,7 м",w:"музей"},
@@ -299,7 +298,7 @@ function renderRoutes(){
         <div class="load"><b>Грузить:</b> сначала то, что выгружаем последним — ${esc(loadOrder)}.${r.tip?"<br>"+esc(r.tip):""}</div>
       </div>
       <ol class="stops">${r.stops.map((s,i)=>{const L=LOCS[s],z=zs(s),cc=count(z),d=get(key(s),"0")==="1";
-        const showNote=(s==="neg"&&cr==="B")||s==="kotel";
+        const showNote=(s==="neg"&&cr==="B");
         return `<li><details class="stop${d?" done":""}" data-key="${key(s)}">
           <summary><span class="seq">${i+1}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
           <div class="sbody">${chips(cc)}${zonesHtml(showNote?L:{},z)}
@@ -379,7 +378,7 @@ function renderPlan(){
   document.getElementById("plan").innerHTML=`<h2>Кто что делает</h2>${crews}
     <h2>План действий</h2>
     <ul class="steps">${steps.map(s=>`<li class="step"><div class="when">${s[0]}</div><div><h3>${s[1]}</h3><p>${s[2]}</p></div></li>`).join("")}</ul>
-    <h2>Ещё уточнить</h2><ol class="q"><li>Котельническая наб., 33 — с корпусом 1 или без.</li></ol>`;
+    <h2>Уточнить у заказчика</h2><ol class="q"><li>Котельническая наб., 33 — с корпусом 1 или без. Пока указано без корпуса.</li></ol>`;
 }
 
 function renderStats(){
