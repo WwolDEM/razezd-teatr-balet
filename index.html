@@ -96,6 +96,21 @@ details[open] .caret{transform:rotate(90deg)}
 .q li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px}
 .rbadge{font:500 11px var(--f-mono);color:var(--pine);background:var(--pine-soft);border-radius:6px;padding:3px 6px;white-space:nowrap}
 .muted{color:var(--muted);font-size:13px;margin:0}
+.days{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.days button{all:unset;cursor:pointer;text-align:center;padding:9px 4px;border-radius:11px;border:1px solid var(--line);background:var(--surface);display:grid;gap:3px}
+.days button b{font:500 14px/1 var(--f-mono)}
+.days button span{font-size:11px;color:var(--muted)}
+.days button[aria-pressed="true"]{border-color:var(--pine);background:var(--pine-soft)}
+.days button:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+.depart{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.depart b{color:var(--ink);font:500 13px var(--f-mono)}
+.crew{display:grid;gap:10px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.crew.a{border-top:4px solid var(--gold)} .crew.b{border-top:4px solid var(--pine)}
+.crew .stop{background:var(--bg);box-shadow:none}
+.ctag{font:600 11px/1 var(--f-body);letter-spacing:.07em;text-transform:uppercase}
+.crew.a .ctag{color:var(--gold)} .crew.b .ctag{color:var(--pine)}
+.crew.a .seq{background:var(--gold-soft);color:var(--gold)}
+.crew.a .stop.done .seq{background:var(--gold);color:#FFFFFF}
 @media (prefers-reduced-motion:reduce){.caret{transition:none}}
 </style>
 </head>
@@ -131,13 +146,13 @@ const LOCS = {
     {t:"pzr",w:"корп. Б, входная группа"},
     {t:"tree",h:"2,4 м (низ не шире 1 м)",w:"корп. В, 1 этаж, кафе «В»"},
     {t:"tree",h:"2,3–2,5 м",w:"корп. В, каминный зал"},
-    {t:"comp",n:16,w:"корп. В, кафе"},
+    {t:"comp",n:16,w:"корп. В, кафе",crew:"A"},
     {t:"big",w:"корп. В, фойе 2 этажа"},
     {t:"street",w:"корп. В, уличная входная группа"}],
-    note:"Ель 6 м в фойе собирает заказчик. Договориться, чтобы она стояла собранной до нашего приезда."},
+    note:"Ель 6 м в фойе заказчик собирает в этот же день. Бригада Б украшает её после сборки — заранее созвониться и узнать время."},
   nastas:{name:"Настасьинский пер., 5",addr:"Москва, Настасьинский переулок, 5",zones:[{t:"tree",h:"2–2,1 м",w:"входная группа"}]},
   kotel:{name:"Котельническая наб., 33",addr:"Москва, Котельническая набережная, 33",zones:[{t:"pzc",w:"входная группа"}],
-    note:"В п. 1.2 «д. 33», в п. 2.2 «д. 33, корп. 1». Уточнить корпус."},
+    note:"Корпус уточняется: в п. 1.2 «д. 33», в п. 2.2 «д. 33, корп. 1»."},
   balchug:{name:"Балчуг, 2",addr:"Москва, улица Балчуг, 2",zones:[
     {t:"pzr",w:"входная группа"},
     {t:"tree",h:"2,7 м",w:"музей"},
@@ -176,16 +191,22 @@ const LOCS = {
     {t:"pzc",w:"входная группа"},{t:"comp",n:20,w:"кафе"}]}
 };
 
-const ROUTES = [
-  {n:1,date:"Сб 21.11",title:"Центр",stops:["selivers","neg","nastas"],
-   tip:"Самый тяжёлый адрес — Неглинная: две фотозоны, лестница, 4 ели, ель 6 м заказчика. На неё закладывать большую часть дня."},
-  {n:2,date:"Вс 22.11",title:"Замоскворечье",stops:["kotel","balchug","zhitnaya","mytnaya","leninsky"],
-   tip:"Житная, Мытная и Ленинский рядом друг с другом у Октябрьской, переезды короткие."},
-  {n:3,date:"Сб 28.11",title:"Север и северо-запад",stops:["mira","pravdy","volok","svobody"],
-   tip:"Обратно со Свободы удобнее по МКАД."},
-  {n:4,date:"Вс 29.11",title:"Запад и область",stops:["mosfilm","bagrat","odin","zven"],
-   tip:"Звенигородка последней: самый дальний адрес и 20 композиций. Выезжать рано."}
+const DAYS = [
+  {date:"Сб 21.11",short:"21.11",dow:"Сб",win:1,
+   A:{title:"Неглинная",stops:["neg"],tip:"Весь день на Неглинной: фотозоны в корп. А и Б, гирлянда на лестнице, 16 композиций в кафе корп. В."},
+   B:{title:"Центр",stops:["selivers","nastas","neg"],tip:"На Неглинной: ели в кафе «В» и каминном зале, 2 уличные ели в кашпо, украшение ели 6 м заказчика."}},
+  {date:"Вс 22.11",short:"22.11",dow:"Вс",win:1,
+   A:{title:"Замоскворечье",stops:["kotel","balchug","zhitnaya","leninsky"],tip:"Четыре фотозоны подряд — самый плотный день бригады А."},
+   B:{title:"Замоскворечье",stops:["balchug","zhitnaya","mytnaya","leninsky"],tip:"На Балчуге и Житной работаете одновременно с бригадой А: они на входной группе, вы в кафе и музее."}},
+  {date:"Сб 28.11",short:"28.11",dow:"Сб",win:2,
+   A:{title:"Северо-запад",stops:["pravdy","volok","svobody"],tip:"Обратно со Свободы удобнее по МКАД."},
+   B:{title:"Север",stops:["mira","pravdy","volok"],tip:"На Правды и Волоколамском — вслед за бригадой А, ели и композиции в кафе."}},
+  {date:"Вс 29.11",short:"29.11",dow:"Вс",win:2,
+   A:{title:"Запад и область",stops:["bagrat","mosfilm","zven"],tip:"Звенигородка последней: самый дальний адрес."},
+   B:{title:"Запад и область",stops:["mosfilm","odin","zven"],tip:"Одинцово по пути в Звенигородку. В Звенигородке 20 композиций в кафе."}}
 ];
+const CREW = {A:"Бригада А · фотозоны",B:"Бригада Б · ели и композиции"};
+function crewOf(z){return z.crew||((z.t==="pzr"||z.t==="pzc"||z.t==="garl")?"A":"B")}
 
 const KIND = {pzr:"pz",pzc:"pz",tree:"tr",comp:"cp",garl:"ot",big:"ot",street:"tr"};
 
@@ -193,13 +214,13 @@ function zoneInfo(z){
   switch(z.t){
     case "pzr":return {title:"Фотозона прямоугольная",ref:"п. 2.1",items:[
       "Баннер «стена гостиной с лепниной» 2,5–3 × 2,2–2,5 м, хвоя по краю, шары, сосульки, гирлянда",
-      "Люстра из стекляруса на баннер","Ели 2–2,2 м и 1,6–1,8 м (по 1 шт.)",
+      "Люстра из стекляруса на баннер","Ели 2–2,2 м и 1,6–1,8 м на подставках (по 1 шт.)",
       "Рама барокко 0,9–1 × 1,8–2 м","Коробки — 12 шт.","Подсвечники — 3 шт.","Надпись (по согласованному макету)"]};
     case "pzc":return {title:"Фотозона круглая",ref:"п. 2.2",items:[
       "Круглый баннер с лепниной 2 × 2,2 м, хвоя по краю, шары, сосульки, гирлянда",
-      "Ели 2–2,2 м и 1,6–1,8 м (по 1 шт.)","Рама барокко 1–1,2 × 1,8 м",
+      "Ели 2–2,2 м и 1,6–1,8 м на подставках (по 1 шт.)","Рама барокко 1–1,2 × 1,8 м",
       "Коробки — 12 шт.","Подсвечники — 3 шт.","Надпись (по согласованному макету)"]};
-    case "tree":return {title:"Ель "+z.h,ref:"п. 2.3",items:["Коробки под елью — 10 шт.","Надпись рядом с елью"]};
+    case "tree":return {title:"Ель "+z.h,ref:"п. 2.3",items:["Ель на подставке","Коробки под елью — 10 шт.","Надпись рядом с елью"]};
     case "comp":return {title:"Настольные композиции — "+z.n+" шт.",ref:"п. 2.4",items:["20 × 20 × 20 см, хвоя искусств./натур. 70/30"]};
     case "garl":return {title:"Хвойная гирлянда на лестницу, 15 м",ref:"п. 2.1.6",items:["Шары золотые, белые, перламутровые"]};
     case "big":return {title:"Украсить ель 6 м заказчика",ref:"п. 2.5",items:["Полный декор ели","Коробки — 30 шт.","Надпись рядом с елью"]};
@@ -235,10 +256,11 @@ function mapUrl(addr){return "https://yandex.ru/maps/?text="+encodeURIComponent(
 function get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 
-const routeOf={};ROUTES.forEach(r=>r.stops.forEach(s=>routeOf[s]=r.n));
+const visits={};DAYS.forEach(d=>["A","B"].forEach(c=>d[c].stops.forEach(s=>{(visits[s]=visits[s]||[]).push(d.short+" "+c)})));
 
-function zonesHtml(loc){
-  return loc.zones.map(z=>{const i=zoneInfo(z);return `<div class="zone z-${KIND[z.t]}">
+function zonesHtml(loc,zones){
+  zones=zones||loc.zones;
+  return zones.map(z=>{const i=zoneInfo(z);return `<div class="zone z-${KIND[z.t]}">
     <div class="zt">${esc(i.title)} <span class="ref">${i.ref}</span></div>
     <div class="zw">${esc(z.w)}</div>
     <ul>${i.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`}).join("")
@@ -252,34 +274,42 @@ function shortSub(c){
 }
 
 function renderRoutes(){
-  const start=get("start","Москва, Бибирево");
-  let h=`<div class="start"><label for="startInput">Точка выезда (склад)</label>
+  const start=get("start2","Москва, ул. Пришвина, 26");
+  let di=+get("day","0"); if(!(di>=0&&di<DAYS.length))di=0;
+  const day=DAYS[di];
+  let h=`<div class="days" role="group" aria-label="День монтажа">${DAYS.map((d,i)=>`<button type="button" data-day="${i}" aria-pressed="${i===di}"><b>${d.short}</b><span>${d.dow} · окно ${d.win}</span></button>`).join("")}</div>
+    <div class="start"><label for="startInput">Склад</label>
     <input type="text" id="startInput" value="${esc(start)}" autocomplete="off">
-    <p class="muted">Укажите точный адрес склада — ссылки на маршрут обновятся.</p></div>`;
-  ROUTES.forEach(r=>{
-    const c=sum(r.stops.map(s=>count(LOCS[s].zones)));
+    <div class="depart"><span>Выезд обеих бригад <b>8:00</b></span><span>${day.date}</span></div></div>`;
+  ["A","B"].forEach(cr=>{
+    const r=day[cr];
+    const zs=id=>LOCS[id].zones.filter(z=>crewOf(z)===cr);
+    const c=sum(r.stops.map(s=>count(zs(s))));
     const pts=[start,...r.stops.map(s=>LOCS[s].addr),start];
     const url="https://yandex.ru/maps/?rtt=auto&rtext="+pts.map(encodeURIComponent).join("~");
-    const doneN=r.stops.filter(s=>get("done-"+s,"0")==="1").length;
+    const key=s=>`done2-${di}-${cr}-${s}`;
+    const doneN=r.stops.filter(s=>get(key(s),"0")==="1").length;
     const loadOrder=[...r.stops].reverse().map(s=>LOCS[s].name.split(",")[0]).join(" → ");
-    h+=`<article class="route">
+    h+=`<article class="crew ${cr.toLowerCase()}">
       <div class="rhead">
-        <div class="rtitle"><span class="rnum">Маршрут ${r.n}</span><h2>${r.title}</h2><span class="rdate">${r.date} · ${doneN}/${r.stops.length}</span></div>
+        <span class="ctag">${CREW[cr]}</span>
+        <div class="rtitle"><h2>${r.title}</h2><span class="rdate">${doneN}/${r.stops.length} готово</span></div>
         ${chips(c)}
-        <a class="btn" href="${url}" target="_blank" rel="noopener">Весь маршрут в Яндекс.Картах ↗</a>
-        <div class="load"><b>Грузить в машину:</b> сначала то, что выгружаем последним — ${esc(loadOrder)}.<br>${esc(r.tip)}</div>
+        <a class="btn" href="${url}" target="_blank" rel="noopener">Маршрут в Яндекс.Картах ↗</a>
+        <div class="load"><b>Грузить:</b> сначала то, что выгружаем последним — ${esc(loadOrder)}.${r.tip?"<br>"+esc(r.tip):""}</div>
       </div>
-      <ol class="stops">${r.stops.map((s,i)=>{const L=LOCS[s],cc=count(L.zones),d=get("done-"+s,"0")==="1";
-        return `<li><details class="stop${d?" done":""}" data-id="${s}">
+      <ol class="stops">${r.stops.map((s,i)=>{const L=LOCS[s],z=zs(s),cc=count(z),d=get(key(s),"0")==="1";
+        const showNote=(s==="neg"&&cr==="B")||s==="kotel";
+        return `<li><details class="stop${d?" done":""}" data-key="${key(s)}">
           <summary><span class="seq">${i+1}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
-          <div class="sbody">${chips(cc)}${zonesHtml(L)}
+          <div class="sbody">${chips(cc)}${zonesHtml(showNote?L:{},z)}
             <div class="addr">${esc(L.addr)}</div>
             <div class="actions"><a class="btn ghost" href="${mapUrl(L.addr)}" target="_blank" rel="noopener">Навигатор ↗</a>
-            <label class="check"><input type="checkbox" id="chk-${s}" data-done="${s}" ${d?"checked":""}> Смонтировано</label></div>
+            <label class="check"><input type="checkbox" id="chk-${key(s)}" data-done="${key(s)}" ${d?"checked":""}> Смонтировано</label></div>
           </div></details></li>`}).join("")}</ol>
     </article>`;
   });
-  h+=`<p class="muted">Отметки «Смонтировано» сохраняются только на этом телефоне.</p>`;
+  h+=`<p class="muted">Демонтаж (16–17.01 и 23–24.01) — теми же маршрутами. Отметки «Смонтировано» сохраняются только на этом телефоне.</p>`;
   document.getElementById("routes").innerHTML=h;
 }
 
@@ -292,7 +322,7 @@ function renderList(q=""){
     return txt.includes(qq)});
   h+=`<p class="muted">${ids.length} из ${Object.keys(LOCS).length} точек (18 адресов по ТЗ: Неглинная А, Б, В — одна точка)</p>`;
   h+=`<div class="stops">`+ids.map(id=>{const L=LOCS[id],cc=count(L.zones);
-    return `<details class="stop"><summary><span class="rbadge">М${routeOf[id]}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
+    return `<details class="stop"><summary><span class="rbadge">${visits[id].map(v=>v.split(" ")[0]).filter((v,i,a)=>a.indexOf(v)===i).join(", ")}</span><div class="sname">${esc(L.name)}<div class="ssub">${shortSub(cc)}</div></div><span class="caret">›</span></summary>
     <div class="sbody" style="padding-left:12px">${chips(cc)}${zonesHtml(L)}<div class="addr">${esc(L.addr)}</div>
     <div class="actions"><a class="btn ghost" href="${mapUrl(L.addr)}" target="_blank" rel="noopener">Навигатор ↗</a></div></div></details>`}).join("")+`</div>`;
   const el=document.getElementById("list");el.innerHTML=h;
@@ -333,40 +363,40 @@ function renderTotals(){
 
 function renderPlan(){
   const steps=[
-    ["до 31.10","Согласования с заказчиком","Цвет фона баннеров (прямоугольных и круглых), тексты, шрифты и цвета всех надписей, спорные пункты ТЗ (ниже). Пропуска, время заезда, разгрузка и лифты по каждому адресу."],
-    ["01–14.11","Закупка и производство","Баннеры, рамы, люстры, коробки, подсвечники, ели, декор, гирлянды. Изготовление надписей по утверждённым макетам."],
-    ["14–19.11","Сборка на складе","Собрать и украсить ели и композиции. Разложить комплекты по точкам, подписать короба: «М1-2 Неглинная», и т. д."],
+    ["до 31.10","Согласования с заказчиком","Цвет фона баннеров, тексты, шрифты и цвета всех надписей. Пропуска, время заезда, разгрузка и лифты по каждому адресу — на обе бригады."],
+    ["01–14.11","Закупка и производство","Баннеры, рамы, люстры, коробки, подсвечники, ели с подставками, декор, гирлянды, кашпо. Изготовление надписей по утверждённым макетам."],
+    ["14–19.11","Сборка на складе","Собрать и украсить ели и композиции. Разложить комплекты по бригадам и дням, подписать короба: «21.11 · Б · Неглинная»."],
     ["19–20.11","Натуральная хвоя","Нобилис и пихту брать как можно ближе к монтажу, чтобы простояли до января."],
-    ["21–22.11","Монтаж, маршруты 1–2","Центр и Замоскворечье. На каждой точке — фотоотчёт и подпись ответственного."],
-    ["28–29.11","Монтаж, маршруты 3–4","Север, северо-запад, запад и область."],
+    ["21–22.11","Окно 1: центр и Замоскворечье","Обе бригады параллельно, выезд в 8:00 с Пришвина, 26. На каждой точке — фотоотчёт и подпись ответственного."],
+    ["28–29.11","Окно 2: север, запад, область","Те же правила. Бригада А — фотозоны, бригада Б — ели и композиции."],
     ["дек – янв","Контроль","Проверка состояния натуральной хвои и гирлянд, подсушенное заменить."],
-    ["16–17.01","Демонтаж, маршруты 1–2","Те же маршруты, порядок погрузки обратный."],
-    ["23–24.01","Демонтаж, маршруты 3–4","Закрыть акты."]
+    ["16–17.01","Демонтаж, окно 1","Теми же маршрутами, погрузка в обратном порядке."],
+    ["23–24.01","Демонтаж, окно 2","Закрыть акты."]
   ];
-  const qs=[
-    "Монтаж в ТЗ указан двумя окнами: 21–22.11 и 28–29.11. Можно ли делить адреса на два окна, как в этом плане, или всё должно стоять к 22.11? Тогда нужны две бригады параллельно.",
-    "Котельническая наб., 33 — с корпусом 1 или без?",
-    "Композиция на Житной, 9 этаж (1 шт.), а мини-ель на 9 этаже — на Балчуге. Так и задумано?",
-    "Когда заказчик соберёт ель 6 м на Неглинной 12В?",
-    "В чём ставим ели п. 2.3 — подставки, кашпо? Кашпо указаны только для уличных.",
-    "Точный адрес склада в Бибиреве и время выезда."
-  ];
-  document.getElementById("plan").innerHTML=`<h2>План действий</h2>
+  const crews=`<div class="tbl">
+    <div class="row"><div class="k">Бригада А<small>Все 12 фотозон, гирлянда на лестнице Неглинной, 16 композиций на Неглинной</small></div><div class="v">11 точек</div></div>
+    <div class="row"><div class="k">Бригада Б<small>Все отдельные ели, ель 6 м заказчика, уличные ели, остальные композиции</small></div><div class="v">13 точек</div></div></div>`;
+  document.getElementById("plan").innerHTML=`<h2>Кто что делает</h2>${crews}
+    <h2>План действий</h2>
     <ul class="steps">${steps.map(s=>`<li class="step"><div class="when">${s[0]}</div><div><h3>${s[1]}</h3><p>${s[2]}</p></div></li>`).join("")}</ul>
-    <h2>Уточнить у заказчика</h2><ol class="q">${qs.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`;
+    <h2>Ещё уточнить</h2><ol class="q"><li>Котельническая наб., 33 — с корпусом 1 или без.</li></ol>`;
 }
 
 function renderStats(){
   const t=sum(Object.values(LOCS).map(L=>count(L.zones)));
   document.getElementById("stats").innerHTML=
-    `<span class="stat"><b>${Object.keys(LOCS).length}</b>точек</span><span class="stat"><b>${ROUTES.length}</b>маршрута</span>`+
-    `<span class="stat"><b>${t.pz}</b>фотозон</span><span class="stat"><b>${t.trees}</b>елей</span><span class="stat"><b>${t.comp}</b>композиции</span>`;
+    `<span class="stat"><b>${Object.keys(LOCS).length}</b>точек</span><span class="stat"><b>2</b>бригады</span><span class="stat"><b>4</b>дня</span>`+
+    `<span class="stat"><b>${t.pz}</b>фотозон</span><span class="stat"><b>${t.trees}</b>ель</span><span class="stat"><b>${t.comp}</b>композиции</span>`;
 }
 
 document.addEventListener("change",e=>{
-  if(e.target.dataset.done){const id=e.target.dataset.done;set("done-"+id,e.target.checked?"1":"0");
-    const openId=id;renderRoutes();const d=document.querySelector(`#routes details[data-id="${openId}"]`);if(d)d.open=true;}
-  if(e.target.id==="startInput"){set("start",e.target.value||"Москва, Бибирево");renderRoutes();}
+  if(e.target.dataset.done){const k=e.target.dataset.done;set(k,e.target.checked?"1":"0");
+    renderRoutes();const d=document.querySelector(`#routes details[data-key="${k}"]`);if(d)d.open=true;}
+  if(e.target.id==="startInput"){set("start2",e.target.value||"Москва, ул. Пришвина, 26");renderRoutes();}
+});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-day]");if(!b)return;
+  set("day",b.dataset.day);renderRoutes();
 });
 document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b?"true":"false"));
